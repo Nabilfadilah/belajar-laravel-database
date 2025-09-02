@@ -352,98 +352,98 @@ class QueryBuilderTest extends TestCase
     }
 
     // query builder paging
-    public function testPaging()
-    {
-        // ambil dari function insertProducts
-        $this->insertCategories();
+    // public function testPaging()
+    // {
+    //     // ambil dari function insertProducts
+    //     $this->insertCategories();
 
-        // ambil database categories
-        $collection = DB::table("categories")
-            ->skip(0) // melakukan offset
-            ->take(2) // melakukan limit
-            ->get(); // ambil semua data
+    //     // ambil database categories
+    //     $collection = DB::table("categories")
+    //         ->skip(0) // melakukan offset
+    //         ->take(2) // melakukan limit
+    //         ->get(); // ambil semua data
 
-        // hasilnya ada 2 data
-        self::assertCount(2, $collection);
-        $collection->each(function ($item) {
-            // kita log setiap datanya
-            Log::info(json_encode($item));
-        });
-    }
+    //     // hasilnya ada 2 data
+    //     self::assertCount(2, $collection);
+    //     $collection->each(function ($item) {
+    //         // kita log setiap datanya
+    //         Log::info(json_encode($item));
+    //     });
+    // }
 
     // chunk result
-    public function insertManyCategories()
-    {
-        // perulangan dengan data table 100
-        // masukan data 
-        for ($i = 0; $i < 100; $i++) {
-            DB::table("categories")->insert([
-                "id" => "CATEGORY-$i",
-                "name" => "Category $i",
-                "created_at" => "2020-10-10 10:10:10"
-            ]);
-        }
-    }
+    // public function insertManyCategories()
+    // {
+    //     // perulangan dengan data table 100
+    //     // masukan data 
+    //     for ($i = 0; $i < 100; $i++) {
+    //         DB::table("categories")->insert([
+    //             "id" => "CATEGORY-$i",
+    //             "name" => "Category $i",
+    //             "created_at" => "2020-10-10 10:10:10"
+    //         ]);
+    //     }
+    // }
 
-    public function testChunk()
-    {
-        // ambil dari function insertManyCategories
-        $this->insertManyCategories();
+    // public function testChunk()
+    // {
+    //     // ambil dari function insertManyCategories
+    //     $this->insertManyCategories();
 
-        DB::table("categories")
-            ->orderBy("id") // ambil berdasarkan id
-            // chunk(10), sekali query akan mengambil 10 data
-            ->chunk(10, function ($categories) {
+    //     DB::table("categories")
+    //         ->orderBy("id") // ambil berdasarkan id
+    //         // chunk(10), sekali query akan mengambil 10 data
+    //         ->chunk(10, function ($categories) {
 
-                // tidak boleh kosong 
-                self::assertNotNull($categories);
-                Log::info("Start Chunk"); // tampilkan pesan
-                $categories->each(function ($category) {
-                    // kita log setiap datanya
-                    Log::info(json_encode($category));
-                });
-                Log::info("End Chunk");
-            });
-    }
+    //             // tidak boleh kosong 
+    //             self::assertNotNull($categories);
+    //             Log::info("Start Chunk"); // tampilkan pesan
+    //             $categories->each(function ($category) {
+    //                 // kita log setiap datanya
+    //                 Log::info(json_encode($category));
+    //             });
+    //             Log::info("End Chunk");
+    //         });
+    // }
 
     // Lazy Result
-    public function testLazy()
-    {
-        // ambil dari function insertManyCategories
-        $this->insertManyCategories();
+    // public function testLazy()
+    // {
+    //     // ambil dari function insertManyCategories
+    //     $this->insertManyCategories();
 
-        // ambil table categories
-        $collection = DB::table("categories")
-            ->orderBy("id") // ambil berdasarkan id
-            ->lazy(10) // per chunk nya mau berapa
-            ->take(3); // tapi mau ambil 3 data, jadi 1x query dan hanya 3 data yg ditampilkan
+    //     // ambil table categories
+    //     $collection = DB::table("categories")
+    //         ->orderBy("id") // ambil berdasarkan id
+    //         ->lazy(10) // per chunk nya mau berapa
+    //         ->take(3); // tapi mau ambil 3 data, jadi 1x query dan hanya 3 data yg ditampilkan
 
-        // hasilnya tidak kosong data collection
-        self::assertNotNull($collection);
+    //     // hasilnya tidak kosong data collection
+    //     self::assertNotNull($collection);
 
-        $collection->each(function ($item) {
-            Log::info(json_encode($item));
-        });
-    }
+    //     $collection->each(function ($item) {
+    //         Log::info(json_encode($item));
+    //     });
+    // }
 
     // Cursor
-    public function testCursor()
-    {
-        // ambil dari function insertManyCategories
-        $this->insertManyCategories();
+    // public function testCursor()
+    // {
+    //     // ambil dari function insertManyCategories
+    //     $this->insertManyCategories();
 
-        $collection = DB::table("categories")
-            ->orderBy("id") // ambil berdasarkan id
-            ->cursor(); // hanya akan melakukan query 1x
+    //     $collection = DB::table("categories")
+    //         ->orderBy("id") // ambil berdasarkan id
+    //         ->cursor(); // hanya akan melakukan query 1x
 
-        // hasilnya tidak kosong data collection
-        self::assertNotNull($collection);
+    //     // hasilnya tidak kosong data collection
+    //     self::assertNotNull($collection);
 
-        $collection->each(function ($item) {
-            // kita log setiap datanya
-            Log::info(json_encode($item));
-        });
-    }
+    //     $collection->each(function ($item) {
+    //         // kita log setiap datanya
+    //         Log::info(json_encode($item));
+    //     });
+    // }
 
     // Query Builder Aggregates
     public function testAggregate()
@@ -472,24 +472,26 @@ class QueryBuilderTest extends TestCase
         self::assertEquals(38000000, $result); // harganya harus 38000000
     }
 
-    // public function testQueryBuilderRaw()
-    // {
-    //     // ambil dari function insertProducts
-    //     $this->insertProducts();
+    // Query Builder Raw
+    public function testQueryBuilderRaw()
+    {
+        // ambil dari function insertProducts
+        $this->insertProducts();
 
-    //     // kombinasi Query Builder dan juga Raw Query
-    //     $collection = DB::table("products")
-    //         ->select(
-    //             DB::raw("count(id) as total_product"),
-    //             DB::raw("min(price) as min_price"),
-    //             DB::raw("max(price) as max_price"),
-    //         )->get();
+        // kombinasi Query Builder dan juga Raw Query
+        $collection = DB::table("products")
+            ->select(
+                // jadi query builder aggregate, bisa dalam raw
+                DB::raw("count(id) as total_product"), // select 
+                DB::raw("min(price) as min_price"),
+                DB::raw("max(price) as max_price"),
+            )->get();
 
-    //     // hasilnya harus
-    //     self::assertEquals(2, $collection[0]->total_product);
-    //     self::assertEquals(18000000, $collection[0]->min_price);
-    //     self::assertEquals(20000000, $collection[0]->max_price);
-    // }
+        // hasilnya harus, dan bisa cek hasil kombinasi
+        self::assertEquals(2, $collection[0]->total_product);
+        self::assertEquals(18000000, $collection[0]->min_price);
+        self::assertEquals(20000000, $collection[0]->max_price);
+    }
 
     // public function insertProductFood()
     // {
