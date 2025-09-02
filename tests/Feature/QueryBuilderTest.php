@@ -550,19 +550,24 @@ class QueryBuilderTest extends TestCase
         self::assertCount(0, $collection);
     }
 
-    // public function testLocking()
-    // {
-    //     $this->insertProducts();
+    // Query Builder Locking
+    public function testLocking()
+    {
+        // ambil dari function insertProducts
+        $this->insertProducts();
 
-    //     DB::transaction(function () {
-    //         $collection = DB::table("products")
-    //             ->where('id', '=', '1')
-    //             ->lockForUpdate()
-    //             ->get();
+        // transaksi database, yang akan berubah
+        DB::transaction(function () {
+            // dari table products
+            $collection = DB::table("products")
+                ->where('id', '=', '1') // dari colom id, sama dengan data 1
+                ->lockForUpdate() // Secara otomatis Laravel akan menambahkan perintah FOR UPDATE ke Database untuk melakukan Locking
+                ->get(); // ambil semua data
 
-    //         self::assertCount(1, $collection);
-    //     });
-    // }
+            // hasilnya 1 data update
+            self::assertCount(1, $collection);
+        });
+    }
 
     // public function testPagination()
     // {
