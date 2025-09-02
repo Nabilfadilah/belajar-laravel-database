@@ -406,17 +406,25 @@ class QueryBuilderTest extends TestCase
             });
     }
 
-    // public function testLazy()
-    // {
-    //     $this->insertManyCategories();
+    // Lazy Result
+    public function testLazy()
+    {
+        // ambil dari function insertManyCategories
+        $this->insertManyCategories();
 
-    //     $collection = DB::table("categories")->orderBy("id")->lazy(10)->take(3);
-    //     self::assertNotNull($collection);
+        // ambil table categories
+        $collection = DB::table("categories")
+            ->orderBy("id") // ambil berdasarkan id
+            ->lazy(10) // per chunk nya mau berapa
+            ->take(3); // tapi mau ambil 3 data, jadi 1x query dan hanya 3 data yg ditampilkan
 
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // hasilnya tidak kosong data collection
+        self::assertNotNull($collection);
+
+        $collection->each(function ($item) {
+            Log::info(json_encode($item));
+        });
+    }
 
     // public function testCursor()
     // {
