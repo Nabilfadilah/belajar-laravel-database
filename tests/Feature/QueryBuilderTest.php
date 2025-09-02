@@ -622,23 +622,34 @@ class QueryBuilderTest extends TestCase
         }
     }
 
-    // public function testCursorPagination()
-    // {
-    //     $this->insertCategories();
+    // Cursor Pagination
+    public function testCursorPagination()
+    {
+        // ambil dari function insertCategories
+        $this->insertCategories();
 
-    //     $cursor = "id";
-    //     while (true) {
-    //         $paginate = DB::table("categories")->orderBy("id")->cursorPaginate(perPage: 2, cursor: $cursor);
+        $cursor = "id"; // atur cursor dari id
+        while (true) {
+            $paginate = DB::table("categories") // table categories
+                ->orderBy("id") // ambil berdasarkan id
+                // table categories, dan akan di beri pagination/tampilkan data 2 perpage dan total page 2
+                ->cursorPaginate(perPage: 2, cursor: $cursor);
 
-    //         foreach ($paginate->items() as $item) {
-    //             self::assertNotNull($item);
-    //             Log::info(json_encode($item));
-    //         }
+            // iterasi
+            foreach ($paginate->items() as $item) {
+                // tidak boleh kosong
+                self::assertNotNull($item);
+                // kita log setiap datanya
+                Log::info(json_encode($item));
+            }
 
-    //         $cursor = $paginate->nextCursor();
-    //         if ($cursor == null) {
-    //             break;
-    //         }
-    //     }
-    // }
+            // variabel cursor akan mengarahkan ke next page
+            // cek ambil cursor, dari nextcursornya dari paninate
+            $cursor = $paginate->nextCursor();
+            // kalau sudah tidak ada
+            if ($cursor == null) {
+                break; // hentikan
+            }
+        }
+    }
 }
