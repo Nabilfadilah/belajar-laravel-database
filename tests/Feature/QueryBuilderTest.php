@@ -371,31 +371,40 @@ class QueryBuilderTest extends TestCase
         });
     }
 
-    // public function insertManyCategories()
-    // {
-    //     for ($i = 0; $i < 100; $i++) {
-    //         DB::table("categories")->insert([
-    //             "id" => "CATEGORY-$i",
-    //             "name" => "Category $i",
-    //             "created_at" => "2020-10-10 10:10:10"
-    //         ]);
-    //     }
-    // }
+    // chunk result
+    public function insertManyCategories()
+    {
+        // perulangan dengan data table 100
+        // masukan data 
+        for ($i = 0; $i < 100; $i++) {
+            DB::table("categories")->insert([
+                "id" => "CATEGORY-$i",
+                "name" => "Category $i",
+                "created_at" => "2020-10-10 10:10:10"
+            ]);
+        }
+    }
 
-    // public function testChunk()
-    // {
-    //     $this->insertManyCategories();
+    public function testChunk()
+    {
+        // ambil dari function insertManyCategories
+        $this->insertManyCategories();
 
-    //     DB::table("categories")->orderBy("id")
-    //         ->chunk(10, function ($categories) {
-    //             self::assertNotNull($categories);
-    //             Log::info("Start Chunk");
-    //             $categories->each(function ($category) {
-    //                 Log::info(json_encode($category));
-    //             });
-    //             Log::info("End Chunk");
-    //         });
-    // }
+        DB::table("categories")
+            ->orderBy("id") // ambil berdasarkan id
+            // chunk(10), sekali query akan mengambil 10 data
+            ->chunk(10, function ($categories) {
+
+                // tidak boleh kosong 
+                self::assertNotNull($categories);
+                Log::info("Start Chunk"); // tampilkan pesan
+                $categories->each(function ($category) {
+                    // kita log setiap datanya
+                    Log::info(json_encode($category));
+                });
+                Log::info("End Chunk");
+            });
+    }
 
     // public function testLazy()
     // {
