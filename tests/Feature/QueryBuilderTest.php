@@ -43,17 +43,22 @@ class QueryBuilderTest extends TestCase
         self::assertEquals(2, $result[0]->total);
     }
 
-    // public function testSelect()
-    // {
-    //     $this->testInsert();
+    // query builder insert
+    public function testSelect()
+    {
+        // memanggil 2 insert data yang tadi Gaged dan Food
+        $this->testInsert();
 
-    //     $collection = DB::table("categories")->select(["id", "name"])->get();
-    //     self::assertNotNull($collection);
+        // lalu table categories, select dari kolom "id dan name", lalu get() ambil semua datanya, query builder select 
+        $collection = DB::table("categories")->select(["id", "name"])->get();
+        // hasinya tidak boleh null/kosong
+        self::assertNotNull($collection);
 
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // kita log setiap datanya
+        $collection->each(function ($item) {
+            Log::info(json_encode($item));
+        });
+    }
 
     // public function insertCategories()
     // {
