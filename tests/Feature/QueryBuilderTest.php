@@ -191,51 +191,80 @@ class QueryBuilderTest extends TestCase
         });
     }
 
-    // public function testUpdate()
-    // {
-    //     $this->insertCategories();
+    // query builder update
+    public function testUpdate()
+    {
+        // ambil dari function insertCategories
+        $this->insertCategories();
 
-    //     DB::table("categories")->where("id", "=", "SMARTPHONE")->update([
-    //         "name" => "Handphone"
-    //     ]);
+        // table categories
+        DB::table("categories")
+            ->where("id", "=", "SMARTPHONE") // dari id nya semartphone
+            ->update(["name" => "Handphone"]); // melakukan update untuk kolom name
 
-    //     $collection = DB::table("categories")->where("name", "=", "Handphone")->get();
-    //     self::assertCount(1, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // table categories
+        $collection = DB::table("categories")
+            ->where("name", "=", "Handphone")
+            ->get(); // ambil semua data
 
-    // public function testUpsert()
-    // {
+        // hasilnya 1 data
+        self::assertCount(1, $collection);
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
-    //     DB::table("categories")->updateOrInsert([
-    //         "id" => "VOUCHER"
-    //     ], [
-    //         "name" => "Voucher",
-    //         "description" => "Ticket and Voucher",
-    //         "created_at" => "2020-10-10 10:10:10"
-    //     ]);
+    // upsert (Update or Insert)
+    public function testUpsert()
+    {
+        // table categories
+        DB::table("categories")
+            ->updateOrInsert([
+                "id" => "VOUCHER" // updateOrInsert, melakukan update, jika datanya tidak ada, maka akan dilakukan insert data baru
+            ], [
+                "name" => "Voucher",
+                "description" => "Ticket and Voucher",
+                "created_at" => "2020-10-10 10:10:10"
+            ]);
 
-    //     $collection = DB::table("categories")->where("id", "=", "Voucher")->get();
-    //     self::assertCount(1, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // table categories
+        $collection = DB::table("categories")
+            ->where("id", "=", "Voucher") // id sama dengan voucher
+            ->get(); // ambil semua data
 
-    // public function testIncrement()
-    // {
-    //     $this->seed(CounterSeeder::class);
+        // hasilnya ada 1 data
+        self::assertCount(1, $collection);
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
-    //     DB::table("counters")->where('id', '=', 'sample')->increment('counter', 1);
+    // increment dam decremenet
+    public function testIncrement()
+    {
+        // $this->seed(CounterSeeder::class);
 
-    //     $collection = DB::table("counters")->where('id', '=', 'sample')->get();
-    //     self::assertCount(1, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // table counters
+        DB::table("counters")
+            ->where('id', '=', 'sample') // and column operator value
+            // 'counter'=column, 1=increment 
+            ->increment('counter', 1);  // untuk malakukan increment
+
+        // table counters
+        $collection = DB::table("counters")
+            // 'id'= column, "=" = operator, 'sample' = value
+            ->where('id', '=', 'sample') // and column operator value
+            ->get(); // ambil semua datanya
+
+        // hasilnya ada 1 data
+        self::assertCount(1, $collection);
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
     // public function testDelete()
     // {
