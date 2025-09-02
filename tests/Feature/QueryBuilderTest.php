@@ -266,15 +266,25 @@ class QueryBuilderTest extends TestCase
         });
     }
 
-    // public function testDelete()
-    // {
-    //     $this->insertCategories();
+    // query builder delete
+    public function testDelete()
+    {
+        // ambil dari function insertCategories
+        $this->insertCategories();
 
-    //     DB::table("categories")->where('id', '=', 'SMARTPHONE')->delete();
+        // aksinya
+        DB::table("categories")
+            ->where('id', '=', 'SMARTPHONE') // and column operator value
+            ->delete(); // untuk melakukan sql delete
 
-    //     $collection = DB::table("categories")->where("id", "=", "SMARTPHONE")->get();
-    //     self::assertCount(0, $collection);
-    // }
+        // hasilnya
+        $collection = DB::table("categories")
+            ->where("id", "=", "SMARTPHONE") // and column operator value
+            ->get(); // ambil semua data
+
+        // hasilnya data 0/tidak ada
+        self::assertCount(0, $collection);
+    }
 
     // public function insertProducts()
     // {
