@@ -60,34 +60,35 @@ class QueryBuilderTest extends TestCase
         });
     }
 
-    public function insertCategories()
-    {
-        DB::table("categories")->insert([
-            "id" => "SMARTPHONE",
-            'name' => 'Smartphone',
-            'created_at' => '2020-10-10 10:10:10'
-        ]);
-        DB::table("categories")->insert([
-            "id" => "FOOD",
-            'name' => 'Food',
-            'created_at' => '2020-10-10 10:10:10'
-        ]);
-        DB::table("categories")->insert([
-            "id" => "LAPTOP",
-            'name' => 'Laptop',
-            'created_at' => '2020-10-10 10:10:10'
-        ]);
-        DB::table("categories")->insert([
-            "id" => "FASHION",
-            'name' => 'Fashion',
-            'created_at' => '2020-10-10 10:10:10'
-        ]);
-    }
-
     // public function insertCategories()
     // {
-    //     $this->seed(CategorySeeder::class);
+    //     DB::table("categories")->insert([
+    //         "id" => "SMARTPHONE",
+    //         'name' => 'Smartphone',
+    //         'created_at' => '2020-10-10 10:10:10'
+    //     ]);
+    //     DB::table("categories")->insert([
+    //         "id" => "FOOD",
+    //         'name' => 'Food',
+    //         'created_at' => '2020-10-10 10:10:10'
+    //     ]);
+    //     DB::table("categories")->insert([
+    //         "id" => "LAPTOP",
+    //         'name' => 'Laptop',
+    //         'created_at' => '2020-10-10 10:10:10'
+    //     ]);
+    //     DB::table("categories")->insert([
+    //         "id" => "FASHION",
+    //         'name' => 'Fashion',
+    //         'created_at' => '2020-10-10 10:10:10'
+    //     ]);
     // }
+
+    // bisa memanggil seeder dari unit test
+    public function insertCategories()
+    {
+        $this->seed(CategorySeeder::class);
+    }
 
     // query builder wh
     public function testWhere()
