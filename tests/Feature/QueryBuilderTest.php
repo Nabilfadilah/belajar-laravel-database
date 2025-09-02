@@ -426,17 +426,24 @@ class QueryBuilderTest extends TestCase
         });
     }
 
-    // public function testCursor()
-    // {
-    //     $this->insertManyCategories();
+    // Cursor
+    public function testCursor()
+    {
+        // ambil dari function insertManyCategories
+        $this->insertManyCategories();
 
-    //     $collection = DB::table("categories")->orderBy("id")->cursor();
-    //     self::assertNotNull($collection);
+        $collection = DB::table("categories")
+            ->orderBy("id") // ambil berdasarkan id
+            ->cursor(); // hanya akan melakukan query 1x
 
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // hasilnya tidak kosong data collection
+        self::assertNotNull($collection);
+
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
     // public function testAggregate()
     // {
