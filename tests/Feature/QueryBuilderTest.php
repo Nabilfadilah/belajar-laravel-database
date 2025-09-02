@@ -569,46 +569,58 @@ class QueryBuilderTest extends TestCase
         });
     }
 
-    // public function testPagination()
-    // {
-    //     $this->insertCategories();
+    // Pagination
+    public function testPagination()
+    {
+        // ambil dari function insertProducts
+        $this->insertCategories();
 
-    //     $paginate = DB::table("categories")->paginate(perPage: 2, page: 2);
+        // table categories, dan akan di beri pagination/tampilkan data 2 perpage dan total page 2
+        $paginate = DB::table("categories")->paginate(perPage: 2, page: 2);
 
-    //     self::assertEquals(2, $paginate->currentPage());
-    //     self::assertEquals(2, $paginate->perPage());
-    //     self::assertEquals(2, $paginate->lastPage());
-    //     self::assertEquals(4, $paginate->total());
+        // hasinya
+        self::assertEquals(2, $paginate->currentPage()); // page saat ini
+        self::assertEquals(2, $paginate->perPage()); // tampilan data per page
+        self::assertEquals(2, $paginate->lastPage()); // page terakhir 
+        self::assertEquals(4, $paginate->total()); // total page 
 
-    //     $collection = $paginate->items();
-    //     self::assertCount(2, $collection);
-    //     foreach ($collection as $item) {
-    //         Log::info(json_encode($item));
-    //     }
-    // }
+        // tampilan yang dibuat
+        $collection = $paginate->items();
+        self::assertCount(2, $collection);
+        foreach ($collection as $item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        }
+    }
 
-    // public function testIterateAllPagination()
-    // {
-    //     $this->insertCategories();
+    // Iterasi Per Page
+    public function testIterateAllPagination()
+    {
+        // ambil dari function insertProducts
+        $this->insertCategories();
 
-    //     $page = 1;
+        $page = 1; // ambil dari page 1
 
-    //     while (true) {
-    //         $paginate = DB::table("categories")->paginate(perPage: 2, page: $page);
+        while (true) {
+            $paginate = DB::table("categories")
+                // table categories, dan akan di beri pagination/tampilkan data 2 perpage dan total page 2
+                ->paginate(perPage: 2, page: $page);
 
-    //         if ($paginate->isEmpty()) {
-    //             break;
-    //         } else {
-    //             $page++;
+            // apakah empty
+            if ($paginate->isEmpty()) {
+                break; // kalau udah gak ada datanya
+            } else {
+                $page++; // naikan pagenya
 
-    //             $collection = $paginate->items();
-    //             self::assertCount(2, $collection);
-    //             foreach ($collection as $item) {
-    //                 Log::info(json_encode($item));
-    //             }
-    //         }
-    //     }
-    // }
+                // dan lakukan iterasi
+                $collection = $paginate->items();
+                self::assertCount(2, $collection);
+                foreach ($collection as $item) {
+                    Log::info(json_encode($item));
+                }
+            }
+        }
+    }
 
     // public function testCursorPagination()
     // {
