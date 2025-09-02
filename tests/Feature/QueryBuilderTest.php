@@ -445,30 +445,39 @@ class QueryBuilderTest extends TestCase
         });
     }
 
-    // public function testAggregate()
-    // {
-    //     $this->insertProducts();
+    // Query Builder Aggregates
+    public function testAggregate()
+    {
+        // ambil dari function insertProducts
+        $this->insertProducts();
 
-    //     $result = DB::table("products")->count("id");
-    //     self::assertEquals(2, $result);
+        $result = DB::table("products")
+            ->count("id"); // count(column) untuk jumlah data
+        self::assertEquals(2, $result); // hasilnya harus 2
 
-    //     $result = DB::table("products")->min("price");
-    //     self::assertEquals(18000000, $result);
+        $result = DB::table("products")
+            ->min("price"); // min(column) untuk minimal data
+        self::assertEquals(18000000, $result); // harganya harus 1800000
 
-    //     $result = DB::table("products")->max("price");
-    //     self::assertEquals(20000000, $result);
+        $result = DB::table("products")
+            ->max("price"); // max(column) untuk maksimal data
+        self::assertEquals(20000000, $result); // harganya harus 20000000
 
-    //     $result = DB::table("products")->avg("price");
-    //     self::assertEquals(19000000, $result);
+        $result = DB::table("products")
+            ->avg("price"); // avg(column) untuk rata-rata data
+        self::assertEquals(19000000, $result); // harganya harus 19000000
 
-    //     $result = DB::table("products")->sum("price");
-    //     self::assertEquals(38000000, $result);
-    // }
+        $result = DB::table("products")
+            ->sum("price"); // sum(column) untuk menjumlahkan data
+        self::assertEquals(38000000, $result); // harganya harus 38000000
+    }
 
     // public function testQueryBuilderRaw()
     // {
+    //     // ambil dari function insertProducts
     //     $this->insertProducts();
 
+    //     // kombinasi Query Builder dan juga Raw Query
     //     $collection = DB::table("products")
     //         ->select(
     //             DB::raw("count(id) as total_product"),
@@ -476,6 +485,7 @@ class QueryBuilderTest extends TestCase
     //             DB::raw("max(price) as max_price"),
     //         )->get();
 
+    //     // hasilnya harus
     //     self::assertEquals(2, $collection[0]->total_product);
     //     self::assertEquals(18000000, $collection[0]->min_price);
     //     self::assertEquals(20000000, $collection[0]->max_price);
@@ -499,15 +509,17 @@ class QueryBuilderTest extends TestCase
 
     // public function testGroupBy()
     // {
+    //     // ambil dari function insertProducts dan insertProductsFood
     //     $this->insertProducts();
     //     $this->insertProductFood();
 
     //     $collection = DB::table("products")
-    //         ->select("category_id", DB::raw("count(*) as total_product"))
-    //         ->groupBy("category_id")
-    //         ->orderBy("category_id", "desc")
-    //         ->get();
+    //         ->select("category_id", DB::raw("count(*) as total_product")) // raw 
+    //         ->groupBy("category_id") // kategorikan berdasarkan category_id
+    //         ->orderBy("category_id", "desc") // ambil berdasarkan "category_id", "desc"
+    //         ->get(); // ambil semua data 
 
+    //     // hasil yang diharapkan
     //     self::assertCount(2, $collection);
     //     self::assertEquals("SMARTPHONE", $collection[0]->category_id);
     //     self::assertEquals("FOOD", $collection[1]->category_id);
