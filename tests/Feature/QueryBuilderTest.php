@@ -351,20 +351,25 @@ class QueryBuilderTest extends TestCase
         });
     }
 
-    // public function testPaging()
-    // {
-    //     $this->insertCategories();
+    // query builder paging
+    public function testPaging()
+    {
+        // ambil dari function insertProducts
+        $this->insertCategories();
 
-    //     $collection = DB::table("categories")
-    //         ->skip(0)
-    //         ->take(2)
-    //         ->get();
+        // ambil database categories
+        $collection = DB::table("categories")
+            ->skip(0) // melakukan offset
+            ->take(2) // melakukan limit
+            ->get(); // ambil semua data
 
-    //     self::assertCount(2, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // hasilnya ada 2 data
+        self::assertCount(2, $collection);
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
     // public function insertManyCategories()
     // {
