@@ -493,56 +493,62 @@ class QueryBuilderTest extends TestCase
         self::assertEquals(20000000, $collection[0]->max_price);
     }
 
-    // public function insertProductFood()
-    // {
-    //     DB::table("products")->insert([
-    //         "id" => "3",
-    //         "name" => "Bakso",
-    //         "category_id" => "FOOD",
-    //         "price" => 20000
-    //     ]);
-    //     DB::table("products")->insert([
-    //         "id" => "4",
-    //         "name" => "Mie Ayam",
-    //         "category_id" => "FOOD",
-    //         "price" => 20000
-    //     ]);
-    // }
+    public function insertProductFood()
+    {
+        DB::table("products")->insert([
+            "id" => "3",
+            "name" => "Bakso",
+            "category_id" => "FOOD",
+            "price" => 20000
+        ]);
+        DB::table("products")->insert([
+            "id" => "4",
+            "name" => "Mie Ayam",
+            "category_id" => "FOOD",
+            "price" => 20000
+        ]);
+    }
 
-    // public function testGroupBy()
-    // {
-    //     // ambil dari function insertProducts dan insertProductsFood
-    //     $this->insertProducts();
-    //     $this->insertProductFood();
+    // query builder grouping
+    public function testGroupBy()
+    {
+        // ambil dari function insertProducts dan insertProductsFood
+        $this->insertProducts();
+        $this->insertProductFood();
 
-    //     $collection = DB::table("products")
-    //         ->select("category_id", DB::raw("count(*) as total_product")) // raw 
-    //         ->groupBy("category_id") // kategorikan berdasarkan category_id
-    //         ->orderBy("category_id", "desc") // ambil berdasarkan "category_id", "desc"
-    //         ->get(); // ambil semua data 
+        $collection = DB::table("products")
+            // jadi query builder aggregate, bisa dalam raw
+            ->select("category_id", DB::raw("count(*) as total_product")) // raw  
+            ->groupBy("category_id") // kategorikan berdasarkan category_id
+            ->orderBy("category_id", "desc") // ambil berdasarkan "category_id", "desc"
+            ->get(); // ambil semua data 
 
-    //     // hasil yang diharapkan
-    //     self::assertCount(2, $collection);
-    //     self::assertEquals("SMARTPHONE", $collection[0]->category_id);
-    //     self::assertEquals("FOOD", $collection[1]->category_id);
-    //     self::assertEquals(2, $collection[0]->total_product);
-    //     self::assertEquals(2, $collection[1]->total_product);
-    // }
+        // hasil yang diharapkan, dan cek hasil kombinasi
+        self::assertCount(2, $collection);
+        self::assertEquals("SMARTPHONE", $collection[0]->category_id);
+        self::assertEquals("FOOD", $collection[1]->category_id);
+        self::assertEquals(2, $collection[0]->total_product);
+        self::assertEquals(2, $collection[1]->total_product);
+    }
 
-    // public function testGroupByHaving()
-    // {
-    //     $this->insertProducts();
-    //     $this->insertProductFood();
+    // having
+    public function testGroupByHaving()
+    {
+        // ambil dari function insertProducts dan insertProductsFood
+        $this->insertProducts();
+        $this->insertProductFood();
 
-    //     $collection = DB::table("products")
-    //         ->select("category_id", DB::raw("count(*) as total_product"))
-    //         ->groupBy("category_id")
-    //         ->having(DB::raw("count(*)"), ">", 2)
-    //         ->orderBy("category_id", "desc")
-    //         ->get();
+        $collection = DB::table("products")
+            // jadi query builder aggregate, bisa dalam raw
+            ->select("category_id", DB::raw("count(*) as total_product")) // raw
+            ->groupBy("category_id") // kategorikan berdasarkan category_id
+            ->having(DB::raw("count(*)"), ">", 2) // having count nya lebih dari 2
+            ->orderBy("category_id", "desc") // ambil berdasarkan "category_id", "desc"
+            ->get(); // ambil semua data
 
-    //     self::assertCount(0, $collection);
-    // }
+        // hasinya 0 data
+        self::assertCount(0, $collection);
+    }
 
     // public function testLocking()
     // {
