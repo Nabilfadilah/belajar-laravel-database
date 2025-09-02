@@ -60,78 +60,136 @@ class QueryBuilderTest extends TestCase
         });
     }
 
+    public function insertCategories()
+    {
+        DB::table("categories")->insert([
+            "id" => "SMARTPHONE",
+            'name' => 'Smartphone',
+            'created_at' => '2020-10-10 10:10:10'
+        ]);
+        DB::table("categories")->insert([
+            "id" => "FOOD",
+            'name' => 'Food',
+            'created_at' => '2020-10-10 10:10:10'
+        ]);
+        DB::table("categories")->insert([
+            "id" => "LAPTOP",
+            'name' => 'Laptop',
+            'created_at' => '2020-10-10 10:10:10'
+        ]);
+        DB::table("categories")->insert([
+            "id" => "FASHION",
+            'name' => 'Fashion',
+            'created_at' => '2020-10-10 10:10:10'
+        ]);
+    }
+
     // public function insertCategories()
     // {
     //     $this->seed(CategorySeeder::class);
     // }
 
-    // public function testWhere()
-    // {
-    //     $this->insertCategories();
+    // query builder wh
+    public function testWhere()
+    {
+        // ambil dari function insertCategories
+        $this->insertCategories();
 
-    //     $collection = DB::table("categories")->where(function (Builder $builder) {
-    //         $builder->where('id', '=', 'SMARTPHONE');
-    //         $builder->orWhere('id', '=', 'LAPTOP');
-    //         // SELECT * FROM categories WHERE (id = smartphone OR id = laptop)
-    //     })->get();
+        // table categories
+        $collection = DB::table("categories")->where(function (Builder $builder) {
+            // where(column, operator, value), AND column operator value
+            $builder->where('id', '=', 'SMARTPHONE');
 
-    //     self::assertCount(2, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+            // orWhere(column, operator, value) OR (condition)
+            $builder->orWhere('id', '=', 'LAPTOP');
+            // SELECT * FROM categories WHERE (id = smartphone OR id = laptop)
+        })->get();
 
-    // public function testWhereBetween()
-    // {
-    //     $this->insertCategories();
+        // hasilnya
+        self::assertCount(2, $collection);
+        $collection->each(function ($item) {
+            Log::info(json_encode($item));
+        });
+    }
 
-    //     $collection = DB::table("categories")
-    //         ->whereBetween("created_at", ["2020-09-10 10:10:10", "2020-11-10 10:10:10"])
-    //         ->get();
+    // where between method
+    public function testWhereBetween()
+    {
+        // ambil dari function insertCategories
+        $this->insertCategories();
 
-    //     self::assertCount(4, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // table categories
+        $collection = DB::table("categories")
+            // "created_at" = colum, ["array"]
+            ->whereBetween("created_at", ["2020-09-10 10:10:10", "2020-11-10 10:10:10"]) // WHERE column BETWEEN value1 AND value2
+            ->get(); // ambil semua data
 
-    // public function testWhereIn()
-    // {
-    //     $this->insertCategories();
+        // hasilnya akan data ke 4
+        self::assertCount(4, $collection);
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
-    //     $collection = DB::table("categories")->whereIn("id", ["SMARTPHONE", "LAPTOP"])->get();
+    // where in method
+    public function testWhereIn()
+    {
+        // ambil dari function insertCategories
+        $this->insertCategories();
 
-    //     self::assertCount(2, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // table categories
+        $collection = DB::table("categories")
+            // "id" = colum, ["array"]
+            ->whereIn("id", ["SMARTPHONE", "LAPTOP"]) // WHERE column IN (array)
+            ->get(); // ambil semua datanya
 
-    // public function testWhereNull()
-    // {
-    //     $this->insertCategories();
+        // hasilnya akan data ke 2
+        self::assertCount(2, $collection);
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
-    //     $collection = DB::table("categories")
-    //         ->whereNull("description")->get();
+    // where null method
+    public function testWhereNull()
+    {
+        // ambil dari function insertCategories
+        $this->insertCategories();
 
-    //     self::assertCount(4, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // table categories
+        $collection = DB::table("categories")
+            ->whereNull("description") // WHERE column IS NULL
+            ->get(); // ambil semua data
 
-    // public function testWhereDate()
-    // {
-    //     $this->insertCategories();
+        // hasilnya akan dapat 4 datanya
+        self::assertCount(4, $collection);
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
-    //     $collection = DB::table("categories")
-    //         ->whereDate("created_at", "2020-10-10")->get();
+    // where data method
+    public function testWhereDate()
+    {
+        // ambil dari function insertCategories
+        $this->insertCategories();
 
-    //     self::assertCount(4, $collection);
-    //     $collection->each(function ($item) {
-    //         Log::info(json_encode($item));
-    //     });
-    // }
+        // table categories
+        $collection = DB::table("categories")
+            // "created_at" = column, "2020" = value
+            ->whereDate("created_at", "2020-10-10") // WHERE DATE(column) = value
+            ->get(); // ambil semua data
+
+        // hasilnya akan 4 data
+        self::assertCount(4, $collection);
+        $collection->each(function ($item) {
+            // kita log setiap datanya
+            Log::info(json_encode($item));
+        });
+    }
 
     // public function testUpdate()
     // {
